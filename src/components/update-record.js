@@ -1,41 +1,68 @@
-import { useState } from "react";
-import { updateRecord} from '../utils/update-record'
-import { useSelector } from "react-redux";
-import { store } from "../store";
-import { useDispatch } from "react-redux";
+import { Component  } from "react";
+import { updateRecord} from '../actions/actions-update_record';
+import { connect } from "react-redux";
+// import { useSelector } from "react-redux";
+// import { store } from "../store";
 
-export function UpdateRecord(props) {
-    
-    const dispatch = useDispatch();
-    const id = useSelector((state) => state.initState.curRec.id);
-    
-    let ttl= useSelector((state) => state.initState.curRec.title);
-    
-    const completed = useSelector((state) => state.initState.curRec.completed);
-    let isUpdating = useSelector((state)  => state.initState.isUpdating);
+// import { useDispatch } from "react-redux";
 
-     const [title, setTitle] = useState(ttl) ;
-     const [stat, setStat] = useState(completed);
+class UpdateRecordContainer extends Component {
+    constructor (props) {
+        super(props);
+
+        this.state = {
+            title: props.curRec.title,
+            completed:  props.curRec.completed,
+            id:     props.curRec.id
+        };
+    };
+
+    setTitle = (val) => {
+        this.setState({
+          ...this.state,
+          title: val
+        })
+      };
+
+    setStat = (val) => {
+        this.setState({
+            ...this.state,
+            completed: val
+        }); 
+    };
     
+    requestUpdateRecord = () => {
+        // Добавление записи
+        
+        this.props.dispatch(updateRecord(this.state.id, this.state.title, this.state.completed));     
+    
+    };
+
+    render (){
     return (
-        <div className='update-record' hidden={!isUpdating}>
+        <div className='update-record' hidden={!this.props.isUpdating}>
             <input 
-            value={title}
-            onChange={event => setTitle(event.target.value)}
+            value={this.state.title}
+            onChange={event => this.setTitle(event.target.value)}
             type="text" 
             />
 
             <input 
-            value={stat}
-            onChange={event => setStat(event.target.value)}
+            value={this.state.completed}
+            onChange={event => this.setStat(event.target.value)}
             type="text" 
             />  
 
             <button
             //   disabled={props.isCreating}
-            onClick={() => {updateRecord(id, title, stat, dispatch)}}
+            onClick={() => {this.requestUpdateRecord()}}
                 >Сохранить
             </button>  
         </div>
-    );    
-}
+    ); 
+    };   
+};
+
+const mapStateToProps = (state) => ({ isUpdating: state.initState.isUpdating, curRec: state.initState.curRec});
+
+export const UpdateRecord = connect(mapStateToProps)(UpdateRecordContainer);

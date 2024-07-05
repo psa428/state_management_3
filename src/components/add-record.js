@@ -1,37 +1,57 @@
-import { useSelector } from "react-redux";
+import { Component } from "react";
 
-import { useState } from "react";
-import { addRecord } from "../utils/add-record";
-import { useDispatch } from "react-redux";
-import { getData } from "../actions/actions-get-data";
+import { connect} from "react-redux";
+import { addRecord } from "../actions/actions-add-record";
 
 
-export function AddRecord() {
-  const dispatch = useDispatch();
+class AddRecordContainer extends Component {
+
+  constructor(props) { 
+    super(props);
+    this.state = {
+        title: ''
+    };
+    
+  };
+
+  setTitle = (val) => {
+    this.setState({
+      ...this.state,
+      title: val
+    })
+  }
+  // const dispatch = useDispatch();
  
-    const [title, setTitle] = useState('');
+  //   const [title, setTitle] = useState('');
 
-    const requestAddRecord = () => {
+    requestAddRecord = () => {
       // Добавление записи
-      addRecord(title, dispatch)
       
+      this.props.dispatch(addRecord(this.state.title));     
   
     }
     
-    // const { isCreating, requestAddRecord } = useRequestAddRecord(refreshRec, title);
-    return (
-        <div className='add-record'>
-        <input 
-          value={title}
-          onChange={event => setTitle(event.target.value)}
-          type="text" 
-          placeholder='Введите наименование дела' />
+    render () {
+      return (
+          <div className='add-record'>
+          <input 
+            value={this.state.title}
+            onChange={event => this.setTitle(event.target.value)}
+            type="text" 
+            placeholder='Введите наименование дела' />
 
-        <button
-          // disabled={isCreating}
-           onClick={requestAddRecord}
-            >Добавить
-        </button>  
-      </div>  
-    )
-}
+          <button
+            // disabled={isCreating}
+            onClick={() => {
+              
+              this.requestAddRecord(this.props.dispatch)
+            }
+          }
+              >Добавить
+          </button>  
+        </div>  
+      )
+    };  
+};
+
+export const AddRecord = connect()(AddRecordContainer);

@@ -37,6 +37,20 @@ export const reducerBeg = (state=initialState, action) => {
           }
         }   
       }
+
+      case 'ADD_RECORD':{
+        
+        let newRec = {
+          id:   payload.id,
+          title:  payload.title,
+          completed:  payload.completed
+        };
+
+        return {
+          ...state,
+          records:  [...state.records, newRec]  
+        } 
+      }
       case 'UPDATE_RECORD':{
         
         
@@ -51,24 +65,27 @@ export const reducerBeg = (state=initialState, action) => {
         }
       }
       case 'REFRESH_AFTER_UPDATE':{
-        let idx = state.records.findIndex(item => item.id === payload.id);
+        
         let tmp = [];
         Object.assign(tmp, state.records);
+        let idx = tmp.findIndex(item => item.id === payload.id);        
+        
         tmp[idx] = {
           id: payload.id,
           title:  payload.title,
           completed:  payload.completed
-        }
+        };
         
-
         return {
           ...state,
-          records: tmp,
-          isUpdating: false
+          isUpdating: false,
+          records:  tmp
+          
         }
 
       }
       case 'REFRESH_AFTER_DELETE':{
+        
         let tmp = state.records.filter(item => item.id !== payload.id);
 
         return {
@@ -76,6 +93,13 @@ export const reducerBeg = (state=initialState, action) => {
           records: tmp
         }
 
+      }
+
+      case 'SORT_RECORDS': {
+        return {
+          ...state,
+          records:  payload
+        }
       }
 
      
