@@ -8,7 +8,7 @@ export const updateRecord = (id, title, stat) => {
     let newStat = stat
     
     return (dispatch) => {
-        return  fetchUpdateRecord(id, newTitle, newStat).then( (id) => {
+        return  fetchUpdateRecord(id, newTitle, newStat).then( () => {
 
 
             dispatch({

@@ -69,13 +69,14 @@ export class MainPageContainer extends Component {
 
     render() {
       return (
-          <div className="text-center border-l-8">
+          <div className="text-center">
             {/* <Search strSearch={strSearch} setStrSearch={setStrSearch}/> */}
             <Search strSearch={this.state.strSearch} setStr={this.setStr}/>
             <AddRecord /> 
 
-        <div className="button-panel">     
+        <div className="text-center">     
           <button 
+            className="border-2 m-4 border-blue-200 rounded-md w-36 bg-blue-100"
             onClick={this.requestSortRecords}>
                     Сортировка
           </button>    
@@ -83,14 +84,14 @@ export class MainPageContainer extends Component {
            { this.props.isUpdating ? (<UpdateRecord   /> ): (<></>) }
   
 
-          <h1>To Do List</h1>
-        <div className='table-panel' >
-            <table>
+          <h1 className="text-2xl text-gray-500 font-bold from-indigo-700">To Do List</h1>
+        <div className="container w-120 m-auto text-center" >
+            <table className="border-separate border border-spacing-1 m-auto">
               <tr>
                 
                   {/* <th scope='col'>id</th>  */}
                
-                  <th scope='col'>Title</th>
+                  <th className="border border-spacing-1" scope='col'>Title</th>
                   <th scope='col'>Completed</th>
               </tr>
           
@@ -104,12 +105,12 @@ export class MainPageContainer extends Component {
                         
                            <td>{title}</td>  
                            <td>{completed}</td>
-                          <button 
+                          <button className="border-2 border-gray-300 rounded-md w-20 bg-blue-100"
                           // disabled={isDeleting} 
                           onClick={() => {this.requestDeleteRecord(id)}}>
                                   Удалить
                         </button>
-                        <button
+                        <button className="border-2 border-gray-300 rounded-md w-20 bg-blue-100"
                           // disabled={isUpdating}
                           onClick={() => { 
                               this.props.dispatch({type: 'UPDATE_RECORD',
